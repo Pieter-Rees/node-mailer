@@ -1,21 +1,27 @@
 'use strict';
 const nodemailer = require('nodemailer');
+const fs = require('fs');
+const path = require('path');
+const config = JSON.parse(fs.readFileSync('config.json'));
 
 // create reusable transporter object using the default SMTP transport
 let transporter = nodemailer.createTransport({
-    host: 'smtp.example.com',
-    port: 465,
-    secure: true, // secure:true for port 465, secure:false for port 587
+    host: 'mail.pieterrees.nl',
+    port: 587,
+    secure: false, // secure:true for port 465, secure:false for port 587
     auth: {
-        user: 'username@example.com',
-        pass: 'userpass'
+        user: config.user,
+        pass: config.password
+    },
+    tls: {
+        rejectUnauthorized: false
     }
 });
 
 // setup email data with unicode symbols
 let mailOptions = {
-    from: '"Fred Foo 👻" <foo@blurdybloop.com>', // sender address
-    to: 'bar@blurdybloop.com, baz@blurdybloop.com', // list of receivers
+    from: '"Fred Foo 👻" <pieter@pieterrees.nl>', // sender address
+    to: 'pieter@pieterrees.nl', // list of receivers
     subject: 'Hello ✔', // Subject line
     text: 'Hello world ?', // plain text body
     html: '<b>Hello world ?</b>' // html body
